@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>情人节快乐小非宝</title>
+<style>
+  body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+    font-family: 'Arial', sans-serif;
+    background: #fce4ec; /* 浅粉红色背景 */
+  }
+  .container {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+  h1 {
+    font-size: 48px;
+    color: #ff4081;
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  .heart {
+    position: fixed;
+    display: block;
+    pointer-events: none;
+    z-index: 1;
+    animation: float 2s infinite ease-in-out;
+  }
+  
+  @keyframes float {
+    0% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-20px);
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
+  .firework {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: #ff4081; /* 粉红色 */
+    border-radius: 50%;
+    z-index: 1;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>情人节快乐小非宝</h1>
+</div>
+<script>
+  const heartIcons = ['❤️', '🌹', '🍫']; // 情人节图标
+  const container = document.querySelector('.container');
+
+  document.addEventListener('click', (event) => {
+    // 创建心形图标
+    const heartIcon = document.createElement('div');
+    heartIcon.classList.add('heart');
+    heartIcon.innerText = heartIcons[Math.floor(Math.random() * heartIcons.length)];
+    heartIcon.style.left = `${event.clientX}px`;
+    heartIcon.style.top = `${event.clientY}px`;
+    container.appendChild(heartIcon);
+    
+    // 创建烟花
+    for (let i = 0; i < 30; i++) {
+      createFirework(event.clientX, event.clientY);
+    }
+    
+    // 移除心形图标
+    setTimeout(() => {
+      heartIcon.remove();
+    }, 2000);
+  });
+  
+  function createFirework(x, y) {
+    const firework = document.createElement('div');
+    firework.classList.add('firework');
+    firework.style.left = `${x}px`;
+    firework.style.top = `${y}px`;
+    container.appendChild(firework);
+    
+    const colors = ['#ff4081', '#ff8c00', '#ffff00', '#00ff00', '#00ffff', '#0000ff', '#ff00ff']; // 烟花颜色
+    const color = colors[Math.floor(Math.random() * colors.length)];
+    firework.style.backgroundColor = color;
+    
+    const xVelocity = (Math.random() - 0.5) * 5;
+    const yVelocity = (Math.random() - 0.5) * 5;
+    
+    let animationEnd = false;
+    
+    firework.addEventListener('animationend', () => {
+      animationEnd = true;
+      firework.remove();
+    });
+    
+    requestAnimationFrame(moveFirework);
+    
+    function moveFirework() {
+      if (!animationEnd) {
+        const currentX = parseFloat(firework.style.left);
+        const currentY = parseFloat(firework.style.top);
+        
+        firework.style.left = `${currentX + xVelocity}px`;
+        firework.style.top = `${currentY + yVelocity}px`;
+        
+        requestAnimationFrame(moveFirework);
+      }
+    }
+  }
+</script>
+</body>
+</html>
